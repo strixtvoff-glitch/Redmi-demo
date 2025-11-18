@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Demo - Redmi Note 13 Pro (Mock)</title>
+<style>
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,Arial;background:#000;color:#fff}
+  .stage{position:relative;height:100%;width:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  video, img{max-width:100%;max-height:100%;object-fit:cover;display:block;width:100%;height:100%}
+  .overlay{position:absolute;left:0;right:0;bottom:24px;padding:0 18px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .dotbar{display:flex;gap:8px}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.35)}
+  .dot.active{background:#fff}
+  .btn{background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);cursor:pointer}
+  .title{position:absolute;left:18px;top:18px;font-size:18px;font-weight:600}
+  .touch-tip{position:absolute;right:18px;top:18px;font-size:13px;opacity:.85}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <!-- Slide area (images or video). Replace sources below by your assets -->
+  <video id="slide0" src="demo_video.mp4" loop muted playsinline style="display:block"></video>
+  <img id="slide1" src="feature1.jpg" style="display:none" alt="Feature 1">
+  <img id="slide2" src="feature2.jpg" style="display:none" alt="Feature 2">
+  <div class="title">Redmi Note 13 Pro — Demo</div>
+  <div class="touch-tip">Touch to interact</div>
+
+  <div class="overlay">
+    <div class="dotbar" id="dots"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" id="info">Show specs</button>
+      <button class="btn" id="demoReset">Restart demo</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = [
+  {type:'video',el:document.getElementById('slide0')},
+  {type:'img',el:document.getElementById('slide1')},
+  {type:'img',el:document.getElementById('slide2')}
+];
+let idx = 0;
+const dotsContainer = document.getElementById('dots');
+
+slides.forEach((s,i)=>{
+  const d = document.createElement('div'); d.className='dot'+(i===0?' active':''); d.dataset.i=i;
+  d.onclick = ()=> goTo(i);
+  dotsContainer.appendChild(d);
+});
+
+function show(i){
+  slides.forEach((s,j)=>{
+    s.el.style.display = (j===i)?'block':'none';
+    if(s.type==='video' && j===i){ s.el.currentTime=0; s.el.play().catch(()=>{}); } 
+    if(s.type==='video' && j!==i){ s.el.pause(); }
+  });
+  document.querySelectorAll('.dot').forEach((d,k)=> d.classList.toggle('active', k===i));
+}
+
+function goTo(i){
+  idx = i;
+  show(idx);
+  resetTimer();
+}
+
+let timer;
+function nextSlide(){
+  idx = (idx+1)%slides.length;
+  show(idx);
+}
+function resetTimer(){
+  clearInterval(timer);
+  timer = setInterval(nextSlide, 8000);
+}
+
+document.getElementById('info').onclick = ()=>{
+  alert('Specs (mock): 6.67\" 1.5K AMOLED, 120Hz, Dimensity 7200, 108MP main, 67W fast charge.');
+};
+document.getElementById('demoReset').onclick = ()=> { idx=0; show(0); resetTimer(); };
+
+document.getElementById('stage').addEventListener('click', ()=> {
+  // simulate interactivity: open a "feature" modal or play/pause video
+  const current = slides[idx];
+  if(current.type==='video'){ if(current.el.paused) current.el.play(); else current.el.pause(); }
+});
+
+show(0);
+resetTimer();
+</script>
+</body>
+</html>
