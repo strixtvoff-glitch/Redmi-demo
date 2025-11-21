@@ -37,7 +37,7 @@
 
 <script>
 const slides = [
-  {type:'video',el:document.getElementById('slide0')},
+  {type:'img',el:document.getElementById('slide0')},
   {type:'img',el:document.getElementById('slide1')},
   {type:'img',el:document.getElementById('slide2')}
 ];
@@ -76,7 +76,7 @@ function resetTimer(){
 }
 
 document.getElementById('info').onclick = ()=>{
-  alert('Specs (mock): 6.67\" 1080p AMOLED, 120Hz, MediaTek Helio G99 Ultra, 200MP main, 67W fast charge.');
+  alert('Specs: 6.67pouces" 1080p AMOLED, 120Hz, MediaTek Helio G99 Ultra, 200MP main, 67W fast charge.');
 };
 document.getElementById('demoReset').onclick = ()=> { idx=0; show(0); resetTimer(); };
 
