@@ -1,2 +1,3 @@
 # Redmi-demo
-Demo
+## Démo pour Redmi Note 13 Pro ##
+Cette fausse démo est d'origine faite **uniquement pour le Xiaomi Redmi Note 13 Pro** et viens **copier les démo que l'on peut trouver en magasin** comme La Fnac, Boulanger... 
